@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_front">
+
+    <fragment
+        android:id="@+id/navigation_front"
+        android:name="com.test.ecommerce.ui.front.FrontFragment"
+        android:label="@string/title_front"
+        tools:layout="@layout/fragment_front" />
+
+    <fragment
+        android:id="@+id/navigation_back"
+        android:name="com.test.ecommerce.ui.back.BackFragment"
+        android:label="@string/title_back"
+        tools:layout="@layout/fragment_back" >
+        <action
+            android:id="@+id/action_navigation_back_to_refactorProductFragment"
+            app:destination="@id/refactorProductFragment" />
+        <action
+            android:id="@+id/action_navigation_back_to_createProductFragment"
+            app:destination="@id/createProductFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createProductFragment"
+        android:name="com.test.ecommerce.ui.back.create.CreateProductFragment"
+        android:label="@string/create"
+        tools:layout="@layout/create_product_fragment" >
+        <action
+            android:id="@+id/action_createProductFragment_to_navigation_back"
+            app:destination="@id/navigation_back" />
+    </fragment>
+    <fragment
+        android:id="@+id/refactorProductFragment"
+        android:name="com.test.ecommerce.ui.back.refactor.RefactorProductFragment"
+        android:label="@string/refactor"
+        tools:layout="@layout/refactor_product_fragment" >
+        <action
+            android:id="@+id/action_refactorProductFragment_to_navigation_back"
+            app:destination="@id/navigation_back" />
+    </fragment>
+</navigation>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">ECommerce</string>
+
+    <string name="title_front">Store-Front</string>
+    <string name="product_name">Наименование товара</string>
+    <string name="product_price">Цена</string>
+    <string name="product_quantity">Количество</string>
+    <string name="buy">Купить</string>
+
+    <string name="title_back">Back-End</string>
+    <string name="delete">Удалить</string>
+    <string name="refactor">Изменить</string>
+    <string name="create">Создать</string>
+</resources>
