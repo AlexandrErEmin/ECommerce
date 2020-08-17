@@ -16,8 +16,6 @@ public class FrontViewModel extends ViewModel implements IForRecycler.IRecycler{
     private MutableLiveData<RealmResults<ProductObject>> mProductList; // Полный список
     private MutableLiveData<Integer> mRefactorProduct; // ID Конкретного продукта
 
-    private RealmResults<ProductObject> mListProductObject; // Храним список тут
-
     private DBConnect mDBConnect;
     private Realm realm;
 
@@ -31,8 +29,8 @@ public class FrontViewModel extends ViewModel implements IForRecycler.IRecycler{
     }
 
     public void setmProductList(RealmResults<ProductObject> mProductList) {
-        mListProductObject = mProductList;
-        this.mProductList.setValue(mListProductObject);
+        // Храним список тут
+        this.mProductList.setValue(mProductList);
     }
     public LiveData<RealmResults<ProductObject>> getmProductList() {
         return mProductList;
@@ -49,14 +47,6 @@ public class FrontViewModel extends ViewModel implements IForRecycler.IRecycler{
     public void clickRecycler(int idCard, int positionCard) {
         mDBConnect.buyProduct(idCard);
         setmProductList(mDBConnect.getAllProductCountNonZero());
-    }
-
-    /**
-     * Покупка товара или изменение товара
-     * @param idProduct идентификатор товара
-     */
-    public void buyOrRefactorProduct(int idProduct) {
-        mRefactorProduct.setValue(idProduct);
     }
 
     /**

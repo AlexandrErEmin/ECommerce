@@ -31,7 +31,7 @@ public class FrontProductsAdapter extends RealmRecyclerViewAdapter<ProductObject
 
     @NonNull
     @Override
-    public FrontProductsAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         MaterialCardView cardView = (MaterialCardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card_front, parent, false);
         return new Holder(cardView);
     }
@@ -39,20 +39,23 @@ public class FrontProductsAdapter extends RealmRecyclerViewAdapter<ProductObject
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         ProductObject productObject = productsList.get(position);
-        holder.product_name.setText(productObject.getProduct_name());
-        holder.product_price.setText(productObject.getProduct_price()+"  руб.");
-        holder.product_quantity.setText(productObject.getProduct_quantity()+" шт.");
+        if(productObject != null){
+            String dataSTR = productObject.getProduct_price() + "  руб.";
+            holder.product_name.setText(productObject.getProduct_name());
+            holder.product_price.setText(dataSTR);
+            dataSTR = productObject.getProduct_quantity()+" шт.";
+            holder.product_quantity.setText(dataSTR);
+        }
+        int idCard = productsList.get(holder.getAdapterPosition()).getProduct_id();
+        holder.buy.setOnClickListener(view -> clickCard.clickRecycler(idCard, holder.getAdapterPosition()));
     }
 
     @Override
     public int getItemCount() {
-        if(productsList.size() != 0)
-            return productsList.size();
-        else
-            return 0;
+        return productsList.size();
     }
 
-    class Holder extends RecyclerView.ViewHolder{
+    static class Holder extends RecyclerView.ViewHolder{
         private TextView product_name;
         private TextView product_price;
         private TextView product_quantity;
@@ -63,7 +66,6 @@ public class FrontProductsAdapter extends RealmRecyclerViewAdapter<ProductObject
             this.product_price = itemView.findViewById(R.id.product_price);
             this.product_quantity = itemView.findViewById(R.id.product_quantity);
             this.buy = itemView.findViewById(R.id.buy);
-            buy.setOnClickListener(view -> clickCard.clickRecycler(productsList.get(getAdapterPosition()).getProduct_id(), getAdapterPosition()));
         }
     }
 

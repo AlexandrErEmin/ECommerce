@@ -14,8 +14,6 @@ import com.test.ecommerce.R;
 import com.test.ecommerce.data.lists.ProductObject;
 import com.test.ecommerce.interfaces.IForRecycler;
 
-import java.util.List;
-
 import io.realm.OrderedRealmCollection;
 import io.realm.RealmRecyclerViewAdapter;
 
@@ -30,6 +28,7 @@ public class BackProductsAdapter extends RealmRecyclerViewAdapter<ProductObject,
         this.clickCard = clickCard;
     }
 
+    @NonNull
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         MaterialCardView cardView = (MaterialCardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card_back, parent, false);
@@ -39,8 +38,11 @@ public class BackProductsAdapter extends RealmRecyclerViewAdapter<ProductObject,
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         final ProductObject obj = productsList.get(position);
-        holder.product_name.setText(obj.getProduct_name()+"-"+obj.getProduct_id());
-        holder.product_quantity.setText(obj.getProduct_quantity()+" шт.");
+        if (obj != null){
+            holder.product_name.setText(obj.getProduct_name());
+            String quantity = obj.getProduct_quantity()+" шт.";
+            holder.product_quantity.setText(quantity);
+        }
     }
 
     @Override

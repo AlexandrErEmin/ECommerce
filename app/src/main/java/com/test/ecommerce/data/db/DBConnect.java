@@ -4,9 +4,6 @@ import android.os.Handler;
 
 import com.test.ecommerce.data.lists.ProductObject;
 
-import java.util.List;
-import java.util.Objects;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -60,9 +57,11 @@ public class DBConnect {
         handler.postDelayed(() -> {
             LRealm.executeTransaction(realm -> {
                 ProductObject productObject = realm.where(ProductObject.class).equalTo("product_id", dataId).findFirst();
-                productObject.setProduct_name(name);
-                productObject.setProduct_price(price);
-                productObject.setProduct_quantity(quantity);
+                if(productObject != null){
+                    productObject.setProduct_name(name);
+                    productObject.setProduct_price(price);
+                    productObject.setProduct_quantity(quantity);
+                }
             });
             LRealm.close();
         }, 5000);
@@ -77,8 +76,10 @@ public class DBConnect {
         handler.postDelayed(() ->
             LRealm.executeTransaction(realm -> {
             ProductObject productObject = realm.where(ProductObject.class).equalTo("product_id", dataId).findFirst();
-            if(productObject.getProduct_quantity() > 0) {
-                productObject.setProduct_quantity(productObject.getProduct_quantity() - 1);
+            if(productObject != null){
+                if(productObject.getProduct_quantity() > 0) {
+                    productObject.setProduct_quantity(productObject.getProduct_quantity() - 1);
+                }
             }
             LRealm.close();
         }), 3000);
@@ -94,16 +95,14 @@ public class DBConnect {
         Realm LRealm = Realm.getDefaultInstance();
         handler.postDelayed(() -> LRealm.executeTransaction(realm -> {
             LRealm.where(ProductObject.class).sort("product_id");
-            int maxId = 1;
-            maxId = Objects.requireNonNull(realm.where(ProductObject.class).max("product_id")).intValue();
-            maxId+=maxId;
-
+            Number number = realm.where(ProductObject.class).max("product_id");
             ProductObject newData = new ProductObject();
-            newData.setProduct_id(maxId);
-            newData.setProduct_name(name);
-            newData.setProduct_price(price);
-            newData.setProduct_quantity(quantity);
-
+            if(number != null){
+                newData.setProduct_id(number.intValue() + 1);
+                newData.setProduct_name(name);
+                newData.setProduct_price(price);
+                newData.setProduct_quantity(quantity);
+            }
             LRealm.copyToRealm(newData);
             LRealm.close();
         }), 5000);
@@ -116,7 +115,9 @@ public class DBConnect {
     public void deleteProduct(int idProduct){
         Realm LRealm = Realm.getDefaultInstance();
         handler.postDelayed(() -> LRealm.executeTransaction(realm -> {
-            Objects.requireNonNull(realm.where(ProductObject.class).equalTo("product_id", idProduct).findFirst()).deleteFromRealm();
+            ProductObject res = realm.where(ProductObject.class).equalTo("product_id", idProduct).findFirst();
+            if (res != null)
+                res.deleteFromRealm();
             LRealm.close();
         }), 5000);
     }
